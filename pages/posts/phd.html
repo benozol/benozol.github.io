@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2021-06-30 Wed 23:20 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vaccine Semantics</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Benedikt Becker">
+<link rel='icon' href='/pages/favicon.ico' type='image/x-icon'>
+<link rel='stylesheet' type='text/css' href='/pages/css/tufte.css' />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<nil id="nil" class="status">
+<p><a href="/pages/posts/">&lt; All posts</a></p>
+</nil>
+<nil id="nil">
+<header>
+<h1 class="title">Vaccine Semantics</h1>
+</header><p>
+Post-marketing management and decision-making about vaccines builds upon the
+timely detection of vaccine safety signals and changes in public sentiment,
+established evidence about a vaccine, and the quantification of benefits and
+risks and the verification of hypotheses about the benefits and risks (BR) of
+vaccines in observational studies. Prompt and accurate access to such
+vaccine-related information is fundamental to ensure the safety of vaccination
+programmes and to maintain public confidence. Several resources provide relevant
+insights about vaccines but the representation of information differs between
+and within resources, which impedes information extraction. This thesis proposed
+automatic methods to retrieve vaccine-related information from resources in view
+of such representational heterogeneity.
+</p>
+
+<p>
+\Cref{part:socmed} was motivated by the question if public social media messages capture
+information that is relevant for the post-marketing management of vaccines.
+\Cref{chap:socmed1} explored the use of social media messages to monitor vaccine safety
+concerns by analysing English messages mentioning an HPV vaccine and infertility, a
+supposed adverse event. Publicly available data from the considered social media networks
+were sparse and largely untrackable for the purpose of providing early clues of safety
+concerns. \Cref{chap:socmed2} targeted the monitoring of public sentiment towards a
+vaccine in a multinational debate by analysing international, multilingual messages about
+a pentavalent vaccine, which had previously been introduced in numberous lower and
+middle-income countries. The messages that were analysed in both studies possessed three
+salient properties: frequent references to other websites (particularly news pages), few
+interactions between users (i.e., few replies or reposts), and virtual absence of personal
+reports about the vaccines. This may, however, come as little surprise given that only
+public messages were analysed, whereas personal experiences may rather be expressed in
+private messages, which were unavailable for the purpose of the studies.
+</p>
+
+<p>
+The debate as manifested in social media was portrayed by peaks of messages following
+events in country-specific vaccination programmes. The perception of events was local:
+users reacted largely to events in their own country or adjacent countries, suggesting
+multiple, national debates rather than a multinational debate. The messages did not
+directly reflect the public's sentiment about the vaccine issues or events, because most
+messages by private persons were composed only by references to news pages that covered
+major events in the implementation of vaccination programmes. The messages, however, may
+reflect the users' sentiment indirectly exactly because the lack of additional, personal
+content suggests that the authors generally concur with the referenced content. The
+dominant concern in referred websites was about the safety of the vaccine.
+</p>
+
+<p>
+\Cref{part:scilit} proposed automatic methods underlying the extraction of established
+evidence about vaccines from scientific literature. \Cref{chap:vacco2} focused on the
+recognition of vaccine descriptions and on the classification of research articles by
+vaccines. The proposed method for the recognition of vaccine descriptions used the VaccO
+ontology of vaccine descriptions to recognize vaccines and their properties, and a simple
+heuristic to annotate vaccine descriptions based on the co-occurrence of vaccines and
+properties within sentences. The method performed reasonably well (F-score 0.69) in
+comparison to the inter-annotator agreement of the manually created reference corpus of
+vaccine descriptions (F-score 0.80). The error analysis revealed two possible ways for
+improving the approach. First, the VaccO ontology should be expanded with non-European
+vaccines, vaccines under development, and their properties. Second, the rule-based
+heuristic to annotate descriptions based on sentence co-occurrence was a major error
+source and should take into account the textual context of recognized vaccines and
+properties. The reference corpus of vaccine descriptions that we developed is the first of
+its kind and publicly available for training and testing of future methods.
+</p>
+
+<p>
+For the classification of vaccine articles, we compared dictionary-based, ontology-based,
+statistical, and hybrid methods to assign vaccine codes from the MeSH vocabulary by an
+analysis of the article title and abstract. A simple dictionary of vaccine descriptions
+lacked the necessary flexibility in light of the large syntactic variation of vaccine
+descriptions in scientific literature (F-score 0.45). The ontology-based method derived a
+list of properties of the articles from the vacco ontology and applied the alignment
+algorithm (\cref{chap:vacco1}) for the assignment of relevant MeSH vaccine codes. The
+algorithm, which proved suitable for aligning descriptors between vaccine coding systems,
+had only moderate performance for categorizing vaccine literature (F-score 0.60). The
+better performance of a hybrid random forest model based on the property list derived from
+VaccO appeared a more robust approach for assigning vaccine headings (F-score 0.68). A
+\gls{cnn} constituted the best model for categorizing vaccine literature but required
+substantial training material to train classifiers that perform well (F-score 0.76). The
+performance of the \gls{cnn} with respect to a single code correlated strongly with the
+number of articles with that code in the training set. The \gls{cnn} performed better than
+the ontology-based method for almost all frequent vaccine codes but was outperformed by it
+for most infrequent codes. Vaccine codes, however, may necessarily be infrequent in the
+training data for novel or less-studied vaccines. To further improve performance, the
+neural network-based method and the ontology-based methods could be combined dependening
+on the number of training examples.
+</p>
+
+<p>
+\Cref{chap:religator} covered the extraction of causal relations between chemicals and
+diseases rather than vaccines, but this work would support equally well vaccine-related
+extractions. The extraction system, RELigator, was implemented by a support vector
+machine, using feature sets based on a linguistic analysis of the article, information
+extracted from the Euretos knowledge graph, and statistics about words in the training
+set. RELigator achieved an F-score of 0.60, and each of the features sets contributed to
+the final system performance.
+</p>
+
+<p>
+\Cref{part:ehr} presented methods to retrieve vaccines and outcomes from \gls{ehr}
+databases that use different coding systems. In \cref{chap:comap}, we presented
+CodeMapper, a web application that assists in the mapping of clinical case definitions
+into code sets from multiple coding systems, which is often a bottleneck in the
+implementation of collaborative observational studies. CodeMapper constitutes a single
+entry point for all phases of creating database-specific code sets for a medical outcome:
+the identification of relevant medical concepts from the case definition, the manual
+revision of medical concepts, and the projection to database-specific code sets. A number
+of semantic operations in CodeMapper help in retrieving related medical concepts during
+the manual revision. The overall mapping process is automatically recorded and manual
+descriptions of the process are regularly requested, which makes the mapping process
+traceable and the mappings more suitable to subsequent studies. CodeMapper and its source
+code are publicly available. We evaluated the effectiveness of CodeMapper's approach by
+simulating an informed usage. Creating a mapping without revising the concepts was
+insufficient for reproducing the reference code sets, indicating that the mapping process
+cannot be replaced by a simple indexing step. However, the goal of CodeMapper is to
+support an informed user in creating such mappings, and our evaluation showed that
+CodeMapper's semantic operations provided an effective and efficient way (sensitivity 0.95
+and precision 0.62).
+</p>
+
+<p>
+\Cref{chap:vacco1} presented the VaccO ontology of vaccine descriptions, and evaluated
+different automatic methods for the alignment of corresponding vaccine codes between
+coding systems. The VaccO ontology defines classes for vaccine products and vaccine
+properties, namely immunization targets (including pathogens and diseases), immunization
+strategies, administration routes, valences, and ingredients. VaccO is agnostic of any
+specific vaccine coding systems: the basic class of vaccines does not subsume any codes
+but only classes that represent pharmacological vaccine groups, common vaccine
+abbreviations (e.g., `DTaP') and vaccine products, which are defined by their relations to
+other entities in the ontology. Each class includes a list of terms, which can be used to
+identify references to the class in free text. The VaccO ontology is publicly available.
+</p>
+
+<p>
+The automatic methods for the alignment of corresponding vaccine codes between different
+coding systems were based on multilingual code descriptors, the only information about
+codes that is available in all vaccine coding systems. Two baseline methods were defined
+based on the overlap of words in the descriptors, and on the overlap of \gls{umls}
+concepts identified in the descriptors. The baseline methods were compared with three
+methods built on the VaccO ontology, defined by the overlap of VaccO classes recognized in
+the descriptors, the equivalence between the logical expressions that represent the
+descriptors in VaccO, and the overlap between properties inferred about the descriptors
+from the ontology. The baseline methods lacked domain-specific knowledge about vaccines
+and vaccine descriptions, and were generally outperformed by the methods built on the
+VaccO ontology. The method based on the overlap of recognized VaccO classes outperformed
+the baseline methods in the reference set with multilingual descriptors, due to the
+multilingual dictionary in the VaccO ontology. The method based on the equivalence of
+logical expressions correctly aligned codes of equivalent vaccine groups described by
+different properties (e.g., `HPV vaccine' and `cervical cancer vaccine'). The method based
+on a flat representation of inferred information additionally identified matching codes
+across taxonomic levels, and demonstrated excellent performance (F-scores 0.91 and 0.96 in
+two reference sets).
+</p>
+
+<p>
+Accurate, automatic methods for extracting information from resources with
+representational heterogeneity for the post-licensure vaccine management can be based on
+task-specific rules, formalized domain-knowledge, or example solutions using supervised
+machine learning. Formalized domain-knowledge provides the highest flexibility for
+specific vaccine-related tasks, where training corpora are unavailable.
+</p>
+</nil>
+<nil id="nil" class="status">
+<hr><p class="date">Last update: 2021-06-30</p>
+</nil>
+</body>
+</html>

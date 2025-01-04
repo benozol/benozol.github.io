@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2021-06-30 Wed 23:20 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Religator: Extraction of chemical-induced diseases using prior knowledge and textual information</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Benedikt Becker">
+<link rel='icon' href='/pages/favicon.ico' type='image/x-icon'>
+<link rel='stylesheet' type='text/css' href='/pages/css/tufte.css' />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<nil id="nil" class="status">
+<p><a href="/pages/phd/">&lt; My PhD</a></p>
+</nil>
+<nil id="nil">
+<header>
+<h1 class="title">Religator: Extraction of chemical-induced diseases using prior knowledge and textual information</h1>
+</header><p>
+In BioCreative V, one of the challenge tasks is the automatic extraction of CDRs from
+biomedical literature. The CDR task comprises two subtasks. The first sub-task involves
+automatic disease named entity recognition and normalization (DNER) from a set of Medline
+documents, and can be considered as a first step in CDR extraction. The second subtask
+consists of extracting chemical-induced diseases (CID) and delivering the chemical-disease
+pairs per document.
+</p>
+
+<p>
+For the DNER subtask, we used our concept recognition tool Peregrine, in combination with
+several optimization steps. For the CID subtask, we applied the optimized Peregrine system
+for disease concept recognition; for chemical concept recognition, we used tmChem, a
+chemical concept recognizer that was provided by the challenge organizers. A relation
+extraction module was trained on a rich feature set, including features derived from a
+graph database containing prior knowledge about chemicals and diseases, and linguistic and
+statistical features derived from the training corpus documents.
+</p>
+
+<p>
+Publication:
+</p>
+
+<p>
+<i>Extraction of chemical-induced diseases using prior knowledge and textual information.</i> (<a href="https://academic.oup.com/database/article/doi/10.1093/database/baw046/2630331">link</a>) <br>
+Ewoud Pons + Benedikt Becker, Saber Akhondi, Zubair Afzal, Erik Van Mulligen, Jan Kors. <br>
+Database, 2016.
+</p>
+</nil>
+<nil id="nil" class="status">
+<hr><p class="date">Last update: 2021-06-30</p>
+</nil>
+</body>
+</html>

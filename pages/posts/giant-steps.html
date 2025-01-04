@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2021-06-30 Wed 23:20 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explaining Counterexamples with Giant-Step Assertion Checking</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Benedikt Becker">
+<link rel='icon' href='/pages/favicon.ico' type='image/x-icon'>
+<link rel='stylesheet' type='text/css' href='/pages/css/tufte.css' />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<nil id="nil" class="status">
+<p><a href="/pages/posts/">&lt; All posts</a></p>
+</nil>
+<nil id="nil">
+<header>
+<h1 class="title">Explaining Counterexamples with Giant-Step Assertion Checking</h1>
+</header><p>
+This post presents how proof failures in program verification can be explained
+using what we call, giant-step runtime assertion checking. This is collaborative
+work with Claudio Belo Laurenco and Claude Marché and has been published as
+</p>
+
+<blockquote>
+<p>
+<i>Explaining Counterexamples with Giant-Step Assertion Checking.</i> (<a href="https://cister-labs.pt/f-ide2021/images/preprints/F-IDE_2021_paper_6.pdf">link</a>) <br>
+Benedikt Becker, Cláudio Belo Lourenço, Claude Marché. (F-IDE, 2021)
+</p>
+</blockquote>
+
+<p>
+What is actually a proof failure? The aim in <i>deductive program verification</i> is
+to prove that a program satisfies some formal specification. Here we look into
+<a href="https://why3.lri.fr">Why3</a>, a platform for deductive program verification. The standard language of
+Why3 is WhyML, where specifications are just part of the program, as in the
+following example.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-why3">use int.Int
+
+let main1 (x: int)
+= let y = x + 1 in
+  assert { y &lt;&gt; 43 } $\prooffailure$
+
+let f (x: int) : int
+  ensures { result &gt; x }
+= x + 1
+
+let main2 (x: int)
+= let y = f x in
+  assert { y = x + 1 } $\prooffailure$
+</pre>
+</div>
+
+<p>
+So we try to prove that the program is safe, that the annotations are valid for
+any input. When the proof fails, when we cannot prove it, we want in Why3 to
+help the programmer and explain why it has failed. There are two categories of
+proof failures:
+</p>
+
+<p>
+On the one hand, a proof failure can arise when the program does not conform to
+the annotation, which fails for some program input. For example, if you call
+function <code>main1</code> with 42 as argument, the assertion fails. We call this a
+non-conformance between program and annotations.
+</p>
+
+<p>
+On the other hand, an annotation may be actually valid during execution, but
+still it's impossible to prove it because some sub-contract in the context is
+too weak, in this case the post-condition of function <code>f</code>. We call this a
+sub-contract weakness.
+</p>
+
+<p>
+And in case of a proof failure in Why3 one can request a counterexample, that is
+a value binding for program variables that invalidate a verification goal.
+</p>
+
+<p>
+In Why3, half of the pipeline to generate counterexample is actually shared with
+the pipeline for program verification: Starting with the annotated program, the
+verification conditions are generated, and using some transformations, one or
+more verification goals are created. The preconditions and the negated goal are
+printed as SMT input. If the SMT solver finds that the SMT input is
+unsatisfiable, the verification goal is valid. Otherwise, solver models are
+requested, from which a counterexample in the original program is derived, a
+process that has been described by Sylvain Dailler and others.
+</p>
+
+<p>
+I call these counterexample <i>candidate</i>, because first, SMT provers don't give any
+guarantee on the validity of their models, potentially resulting in bad
+counterexample, that violate preconditions or don't invalidate the verification
+goal. And second, the SMT solvers don't have a notion of the underlying program,
+and thus cannot give any hints on the reason of the proof failure.
+</p>
+
+<p>
+The objective of this work is to check the validity of candidate
+counterexamples, and to categorise proof failures using normal and giant-step
+RAC.
+</p>
+
+<p>
+This is actually very much inspired by the work of Guillaume Petiot and others,
+where proof failures in FRAMA-C, so in C programs, are categorised by test
+generation.
+</p>
+
+<p>
+In what follows, I will present the standard runtime assertion checking as
+implemented in Why3, the giant-step runtime assertion checking, and how both are
+used to accomplish our objective.
+</p>
+
+<p>
+First a few words on normal RAC in Why3. RAC is just normal program execution,
+where annotations are checked as they are encountered during runtime, with
+respect to the current execution environment. Invalid assertions terminate the
+execution, if it is an assertion we say the execution fails, if it is an
+assumption, we say the execution gets stuck.
+</p>
+
+<p>
+Why3's annotation language is not executable, so deciding the validity of
+annotations can be pretty difficult. In Why3, three steps are tried to decide
+the validity of an annotation. First, a term reduction engine is used to compute
+the validity of the task. If this doesn't work, the task is, seconds, send to a
+prover. Since the reduction engine is bad at using preconditions with quantified
+variables, and SMT solvers are bad at identifying invalid terms, we, third, we
+try to prove the task with negated goal using a prover, and invert the result.
+If nothing works, and the decidability of the task is incomplete, the execution
+may or may not terminate.
+</p>
+
+<p>
+Normal RAC can be applied to a counterexample: You first find the program
+function from where the verification goal originates, in this case function
+main1. And then, you initialise the program parameters with the values from the
+counterexample, in this case you apply `main1` to 42, which results in a failure
+for the verification goal.
+</p>
+
+<p>
+As an intermediate result we can state that a
+failure during normal RAC pinpoints an non-conformance between the program and
+the failing assertion.
+</p>
+
+<p>
+But how to we identify a sub-contract weakness?
+</p>
+
+<p>
+A sub-contract weakness is actually an invalid assertion from the point-of-view
+of program verification, which is modular: this means that from the outside,
+functions and loops are not defined by their bodies but by their post-conditions
+and invariants - the sub-contracts. Also, counterexample values for function
+calls and loops comply to the sub-contracts, usually!, and are not derived from
+the function bodies and loop bodies.
+</p>
+
+<p>
+The idea of giant-step RAC is now: it is just like normal RAC but function
+bodies are not executed in calls, and loop bodies are not iterated. Instead,
+return values and values of written variables are read from an oracle.
+</p>
+
+<p>
+A sub-contract weakness is actually an invalid assertion from the point-of-view
+of program verification, which is modular: this means that from the outside,
+functions and loops are not defined by their bodies but by their post-conditions
+and invariants - the sub-contracts. Also, counterexample values for function
+calls and loops comply to the sub-contracts, usually!, and are not derived from
+the function bodies and loop bodies.
+</p>
+
+<p>
+The idea of giant-step RAC is now: it is just like normal RAC but function
+bodies are not executed in calls, and loop bodies are not iterated. Instead,
+return values and values of written variables are read from an oracle.
+</p>
+
+<p>
+What does this mean? Here is the normal RAC for a call to function f with
+arguments v1 to vn. The function definition is annotated with the variables that
+may be written in the function body, a precondition and a postcondition. For
+RAC, the argument are first bound to the parameters in the environment, and then
+the the preconditions are asserted, the execution fails when they are invalid.
+Then, the body is evaluated to a return value v, and the written variables may
+be modified by side-effect. Then the postconditions are asserted and the value v
+is returned.
+</p>
+
+<p>
+Giant-step RAC execution is equipped with an oracle, and instead of executing
+the function body, it makes a giant-step: it just retrieves the result value v
+and the values of the written variables from the oracle. The post-conditions are
+now assumed, and the execution gets stuck if they are invalid.
+</p>
+
+<p>
+And the giant-step RAC of a while loop starts as normal by asserting the
+invariant initialisation. But then, it does a giant-step to the beginning of
+some loop iteration by updating the written variables by their values from the
+oracle. The values from the oracle are assumed to fulfil the invariant. The
+execution continues almost normally: If the loop condition is false we're done,
+and if the condition is true, the loop body is executed, and we assert the loop
+invariant preservation. But if everything went well, we get stuck, because the
+oracle provides only values for a single loop iteration.
+</p>
+
+<p>
+So how can we use this to identify sub-contract weakness? We first find again
+the program function from where the proof failure originates, here function
+main2. And we execute that function twice, using normal RAC and giant-step RAC,
+each may terminate normally, fail, get stuck, or be incomplete, for example in
+case of annotations that couldn't be decided. For each execution, the program
+parameters are taken from the counterexample, so here we apply main2 to 0. The
+normal RAC terminates normally. For the giant-step RAC, the result for the call
+to f is 2, as given from the counterexample, and the execution fails. And this
+is exactly the criterion to identify a sub-contract weakness!
+</p>
+
+<p>
+Here is overview on how to check counterexample and categorise proof failures,
+with the result of the normal RAC in the rows, and the results of the giant-step
+RAC in the columns. A mentioned earlier, a failure during normal RAC indicates a
+non-conformance between program and annotations. A failure only during
+giant-step RAC fails indicates a sub-contract weakness. If both executions
+terminate normally, the counterexample is bad, because it didn't trigger any
+failures. If the giant-step RAC gets stuck, then the counterexample is bad
+because its values didn't comply with the sub-contracts where they were used.
+</p>
+
+<p>
+To wrap up, here is one example, adapted from the experiments conducted by
+Petiot et al. in FRAMA-C. The function isqrt computes the square root of an
+integer using three variables and a while loop. The post-condition states that
+the argument n is be between the square of the result and the square of the
+result plus one. Why3 proves the VC without further ado.
+</p>
+
+<p>
+But what happens if there is actually an error in the implementation, for
+example if we mistakenly use a subtraction instead of an addition in line 18?
+Why3 will report a proof failure for the preservation of the loop invariant in
+line 12, say that the program doesn't comply to that annotation, and give a
+trace of the execution from the normal RAC: the main function was called with
+argument 4, the variables were initialised, the loop is iterated once, and in
+the end the loop invariant preservation fails.
+</p>
+
+<p>
+And if weaken the sub-constracts of the loop, by replacing the invariant in line
+13 by true? Why3 will report a proof failure for the post-condition, and specfiy
+that some sub-contract is underspecified, together with an execution trace from
+the giant-step RAC: that the main function was called with the argument 1, the
+variables were initialised with values from the oracle (that correspond to the
+normal RAC). For the loop, a giant-step is executed with assigning 0 to r and y,
+and 1 to z, which fulfils the invariants. The condition becomes false, the loop
+terminates, and 0 is returned as a result, for which the post-condition fails.
+</p>
+
+<p>
+As you just witnessed, sub-contract weakness is a property of the whole program,
+and we are planning to identify single sub-contract weaknesses, to be able to
+point to specific functions or loops. We are working on an integration with
+Ada/SPARK, which uses Why3 behind the scenes, and further effort is needed to
+deal during giant-step RAC with oracles that don't provide all necessary values.
+</p>
+
+<p>
+(Adapted from the presentation at F-IDE 2021.)
+</p>
+</nil>
+<nil id="nil" class="status">
+<hr><p class="date">Last update: 2021-06-30</p>
+</nil>
+</body>
+</html>
