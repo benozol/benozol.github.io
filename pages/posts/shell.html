@@ -1,78 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2021-07-22 Thu 23:49 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2025-01-06 Mon 16:05 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Shell tricks</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="Benedikt Becker">
+<meta name="author" content="Benedikt Becker" />
+<meta name="generator" content="Org Mode" />
 <link rel='icon' href='/pages/favicon.ico' type='image/x-icon'>
 <link rel='stylesheet' type='text/css' href='/pages/css/tufte-mine.css' />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <nil id="nil" class="status">
 <p><a href="/pages/posts/">&lt; All posts</a></p>
 </nil>
-<nil id="nil">
+<nil id="nil" class="content">
 <header>
 <h1 class="title">Shell tricks</h1>
 </header>
-<section id="outline-container-orgcf908de" class="outline-2">
-<h2 id="orgcf908de">Zsh, your IDE</h2>
-<div class="outline-text-2" id="text-orgcf908de">
+<section id="outline-container-org95f5d4b" class="outline-2">
+<h2 id="org95f5d4b">Zsh, your IDE</h2>
+<div class="outline-text-2" id="text-org95f5d4b">
 <p>
-During development, some commands are used frequently, for example compilation
-or testing. So far, you would need to re-type them, or search in the history.
-But in an IDE there would be keyboard shortcuts for that, so why not in your
-shell? Use the following lines to put your preferred commands in variable
-<code>$MYMAKE1</code> and call them just by pressing <code>alt-1</code>.
+During development, some commands are used frequently, for example for
+compilation or for testing. So far, you would need to re-type them, or search in
+the history. But in an IDE there would be keyboard shortcuts for that, so why
+not in your shell? Use the following lines to put your preferred commands in
+variable <code>$MYMAKE1</code> and call them just by pressing <code>alt-1</code>.
 </p>
 
 <div class="org-src-container">
@@ -93,9 +47,33 @@ likewise be stored in (per-directory) config files.
 </p>
 </div>
 </section>
+
+<section id="outline-container-orgf6ed068" class="outline-2">
+<h2 id="orgf6ed068">Shell your desktop</h2>
+<div class="outline-text-2" id="text-orgf6ed068">
+<p>
+Using the shell is rarely isolated from using GUI application. A really useful
+interface between the two is the clipboard
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">c() {
+    cat $@|xclip -i -selection clipboard
+}
+# and paste
+[ -n "$(alias p)" ] &amp;&amp; unalias p
+p() {
+    xclip -o -selection clipboard
+}
+filecp () {
+        realpath $@ | xclip -i -selection clipboard
+}
+</pre>
+</div>
+</div>
+</section>
 </nil>
 <nil id="nil" class="status">
-<hr><p class="date">Last update: 2021-07-22</p>
+<hr><p class="date">Last update: 2025-01-06</p>
 </nil>
 </body>
 </html>

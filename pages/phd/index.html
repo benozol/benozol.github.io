@@ -1,69 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2021-06-30 Wed 23:21 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2025-01-06 Mon 16:05 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Vaccine Semantics</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="Benedikt Becker">
+<meta name="author" content="Benedikt Becker" />
+<meta name="generator" content="Org Mode" />
 <link rel='icon' href='/pages/favicon.ico' type='image/x-icon'>
-<link rel='stylesheet' type='text/css' href='/pages/css/tufte.css' />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
+<link rel='stylesheet' type='text/css' href='/pages/css/tufte-mine.css' />
 </head>
 <body>
 <nil id="nil" class="status">
 <p><a href="/pages/">&lt; Everything else</a></p>
 </nil>
-<nil id="nil">
+<nil id="nil" class="content">
 <header>
 <h1 class="title">Vaccine Semantics</h1>
-<p class="subtitle">Automatic methods for recognizing, representing, and reasoning about vaccine-related information</p>
+<p class="subtitle" role="doc-subtitle">Automatic methods for recognizing, representing, and reasoning about vaccine-related information</p>
 </header><p>
 PhD thesis, defended on January 8, 2019.
 </p>
@@ -72,9 +26,13 @@ PhD thesis, defended on January 8, 2019.
 Available at <a href="http://hdl.handle.net/1765/111218">hdl.handle.net/1765/111218</a>.
 </p>
 
-<section id="outline-container-orgf10a572" class="outline-2">
-<h2 id="orgf10a572">Abstract</h2>
-<div class="outline-text-2" id="text-orgf10a572">
+<p>
+Winner of the <a href="http://www.stichtingbazis.nl/juryrapport15.html">BAZIS prize 2020</a>! <a href="file:///Users/benedikt/nextcloud/pages/files/bazis.pdf">Thanks.</a>
+</p>
+
+<section id="outline-container-org83c8b8b" class="outline-2">
+<h2 id="org83c8b8b">Abstract</h2>
+<div class="outline-text-2" id="text-org83c8b8b">
 <p>
 Post-marketing management and decision-making about vaccines builds on the early detection
 of safety concerns and changes in public sentiment, the accurate access to established
@@ -94,9 +52,9 @@ studies about vaccines.
 </div>
 </section>
 
-<section id="outline-container-orgd1ad6b1" class="outline-2">
-<h2 id="orgd1ad6b1">Overview</h2>
-<div class="outline-text-2" id="text-orgd1ad6b1">
+<section id="outline-container-org06b5d0f" class="outline-2">
+<h2 id="org06b5d0f">Overview</h2>
+<div class="outline-text-2" id="text-org06b5d0f">
 <p>
 Here is an overview on the different projects in the thesis, the investigated resources,
 and applied approaches.
@@ -7791,9 +7749,9 @@ and applied approaches.
 </div>
 </section>
 
-<section id="outline-container-orgbb387f0" class="outline-2">
-<h2 id="orgbb387f0">Projects</h2>
-<div class="outline-text-2" id="text-orgbb387f0">
+<section id="outline-container-org52c04a4" class="outline-2">
+<h2 id="org52c04a4">Projects</h2>
+<div class="outline-text-2" id="text-org52c04a4">
 <ul class="org-ul">
 <li><a href="socmed.html">Social media</a>: Can public messages on social medial be used in vaccine surveillance?</li>
 <li><a href="comap.html">CodeMapper</a>: Harmonizing mapping of medical case definitions to clinical coding systems using the UMLS</li>
@@ -7804,9 +7762,9 @@ identification of vaccine descriptions in scientific literature</li>
 </div>
 </section>
 
-<section id="outline-container-orgd5eee75" class="outline-2">
-<h2 id="orgd5eee75">Applications</h2>
-<div class="outline-text-2" id="text-orgd5eee75">
+<section id="outline-container-orga39a39c" class="outline-2">
+<h2 id="orga39a39c">Applications</h2>
+<div class="outline-text-2" id="text-orga39a39c">
 <ul class="org-ul">
 <li>CodeMapper: Semi-automatic coding of case definitions <br>
 <a href="https://app.vac4eu.org/codemapper">https://app.vac4eu.org/codemapper</a></li>
@@ -7816,9 +7774,9 @@ identification of vaccine descriptions in scientific literature</li>
 </div>
 </section>
 
-<section id="outline-container-orgcdf599d" class="outline-2">
-<h2 id="orgcdf599d">Publications</h2>
-<div class="outline-text-2" id="text-orgcdf599d">
+<section id="outline-container-org58d86c6" class="outline-2">
+<h2 id="org58d86c6">Publications</h2>
+<div class="outline-text-2" id="text-org58d86c6">
 <ul class="org-ul">
 <li>Identifying and normalizing vaccine descriptions in scientific literature:
 A comparison between ontology-based and machine learning approaches. <br>
@@ -7849,7 +7807,7 @@ the context of the <a href="http://advance-vaccines.eu/">ADVANCE project</a>.
 </p>
 
 
-<figure>
+<figure id="org4492852">
 <img src="./img/cover.jpg" alt="cover.jpg" width="50%">
 
 </figure>
@@ -7857,7 +7815,7 @@ the context of the <a href="http://advance-vaccines.eu/">ADVANCE project</a>.
 </section>
 </nil>
 <nil id="nil" class="status">
-<hr><p class="date">Last update: 2021-06-30</p>
+<hr><p class="date">Last update: 2025-01-06</p>
 </nil>
 </body>
 </html>
